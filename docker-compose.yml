@@ -1,0 +1,21 @@
+services:
+  zenith:
+    build:
+      context: .
+    container_name: zenith
+    restart: unless-stopped
+    expose:
+      - "81"
+    networks:
+      - dokploy-network
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.zenith-app.rule=Host(`zenithpulseconsulting.co.za`)
+      - traefik.http.routers.zenith-app.entrypoints=websecure
+      - traefik.http.routers.zenith-app.tls.certresolver=letsencrypt
+      - traefik.http.routers.zenith-app.service=zenith-app-unique
+      - traefik.http.services.zenith-app-unique.loadbalancer.server.port=8081
+
+networks:
+  dokploy-network:
+    external: true
