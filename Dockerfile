@@ -23,8 +23,9 @@ FROM nginx:alpine
 # Copy the built app from the previous stage
 COPY --from=build /app/dist/digihelp/ /usr/share/nginx/html/
 
-# Copy custom nginx configuration (optional)
-COPY nginx.conf /etc/nginx/nginx.conf
+# Remove default nginx config and copy custom one
+RUN rm /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose port 81
 EXPOSE 81
